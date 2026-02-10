@@ -1,21 +1,20 @@
 name: Android Build Pro
 
 on:
-  workflow_dispatch: # අතින් බිල්ඩ් එක පටන් ගන්න පුළුවන්
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Extract Project Files
         run: |
-          unzip -o "*.zip"
-          # ZIP එක ඇතුළේ තියෙන ෆයිල් ටික දැනට තියෙන තැනටම ගන්නවා
-          
-      - name: Set up JDK 17
+          unzip project.zip
+          # මෙතනදී ZIP එක ඇතුළේ තියෙන ඔක්කොම පිළිවෙළට එළියට එනවා
+
+      - name: set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
@@ -23,12 +22,10 @@ jobs:
           cache: gradle
 
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew || true
-        # gradlew ෆයිල් එක තිබුණොත් ඒකට අවසර දෙනවා
+        run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew assembleDebug --stacktrace
-        # stacktrace එකෙන් බිල්ඩ් එකේ අවුලක් ආවොත් විස්තර පේනවා
+        run: ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v3
