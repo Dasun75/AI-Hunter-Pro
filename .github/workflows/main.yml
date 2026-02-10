@@ -7,11 +7,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
       - name: Extract Project Files
         run: |
-          unzip -o "*.zip" || true
+          unzip -o "*.zip"
+          # ZIP එක ඇතුළේ තවත් ෆෝල්ඩර් එකක් තිබුණොත් ඒකේ තියෙන දේවල් එළියට ගන්නවා
+          if [ -d "AI-Hunter Pro" ]; then
+            mv "AI-Hunter Pro"/* .
+          elif [ -d "AI-Hunter-Pro" ]; then
+            mv "AI-Hunter-Pro"/* .
+          fi
           
       - name: set up JDK 17
         uses: actions/setup-java@v4
